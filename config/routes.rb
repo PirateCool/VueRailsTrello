@@ -21,7 +21,11 @@ Rails.application.routes.draw do
   resources :announcements, only: [:index]
   devise_for :users, controllers: { omniauth_callbacks: "users/omniauth_callbacks" }
   
-  resources :cards
+  resources :cards do 
+    member do 
+      patch :move
+    end 
+  end
 
   resources :lists do 
     member do 
