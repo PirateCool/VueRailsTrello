@@ -86,6 +86,8 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2)
+    acts_as_list (1.0.0)
+      activerecord (>= 4.2)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     autoprefixer-rails (9.7.3)
@@ -327,6 +329,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  acts_as_list
   administrate!
   bootsnap (>= 1.4.2)
   bootstrap (~> 4.3, >= 4.3.1)
@@ -358,7 +361,7 @@ DEPENDENCIES
   tzinfo-data
   web-console (>= 3.3.0)
   webdrivers
-  webpacker (~> 4.0)
+  webpacker (~> 4.x)
   whenever
 
 RUBY VERSION
