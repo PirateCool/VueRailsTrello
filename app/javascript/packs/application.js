@@ -21,6 +21,9 @@ $(document).on("turbolinks:load", () => {
 
 import Vue from 'vue/dist/vue.esm'
 import App from '../app.vue'
+import TurbolinksAdapter from 'vue-turbolinks'
+
+Vue.use(TurbolinksAdapter)
 
 window.store = {}
 

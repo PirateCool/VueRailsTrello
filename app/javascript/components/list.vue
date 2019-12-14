@@ -4,7 +4,7 @@
       <hr />
       
       <draggable v-model="list.cards" :options="{group: 'cards'}" class="dragArea" @change="cardMoved">
-      <card v-for="card in list.cards" :card="card" class="list-card card card-body mb-3"></card>
+      <card v-for="card in list.cards" :card="card" :list="list"></card>
       </draggable>
 
 	   <a v-if="!editing" v-on:click="startEditing" class="w-100 btn btn-light btn3" style="margin-left: 2px;">＋Add a card</a>
@@ -95,19 +95,6 @@
   min-height: 10px;
 }
 
-.list {
-  display: inline-block;
-  width: 270px; 
-  vertical-align: top;
-  margin-right: 12px;
-  background: #E2E4E6;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  padding-right: 6px;
-  padding-left: 6px;
-
-  border-radius: 3px;
-}
 
 .btn3 {
 	background: transparent;
@@ -119,9 +106,5 @@
 	transiton: all 0.5s ease;
 }
 
-.list-card{
-  margin-bottom: 7px!important;
-  padding: 10px;
-}
 
 </style>
