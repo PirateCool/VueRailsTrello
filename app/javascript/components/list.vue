@@ -10,12 +10,12 @@
 	   <a v-if="!editing" v-on:click="startEditing" class="w-100 btn btn-light btn3" style="margin-left: 2px;">＋Add a card</a>
        <textarea v-if="editing" v-model="message"
        	ref="message" 
-        @keydown.enter.exact.prevent="submitMessage"
+        @keydown.enter.exact.prevent="createCard"
         class="form-control"
         placeholder="Write title for your card ↵"
         style="margin-bottom: 6px;"
         ></textarea>
-        <button v-if="editing" v-on:click="submitMessage" class="btn btn-light w-50" style="margin-left: 2px; margin-right: 3px;"><b>+ Add card</b></button>
+        <button v-if="editing" v-on:click="createCard" class="btn btn-light w-50" style="margin-left: 2px; margin-right: 3px;"><b>+ Add card</b></button>
        <a v-if="editing" v-on:click="editing=false" class="btn btn-transparent"><b>✕</b></a>
 
        
@@ -67,7 +67,7 @@
 
 	    },
 
-	    submitMessage: function() {
+	    createCard: function() {
 	      var data = new FormData
 	      data.append("card[list_id]", this.list.id)
 	      data.append("card[name]", this.message)
@@ -77,8 +77,10 @@
 	        data: data,
 	        dataType: "json",
 	        success: (data) => {
-	          const index = window.store.lists.findIndex(item => item.id == this.list.id)
-	          window.store.lists[index].cards.push(data)
+
+	          this.$store.commit('addCard', data)
+
+	    
 	          this.message = ""
 	          this.$nextTick(() => {this.$refs.message.focus() })
 	        }
