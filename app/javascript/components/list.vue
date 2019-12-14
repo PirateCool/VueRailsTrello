@@ -1,0 +1,127 @@
+<template>
+ <div class="list">
+      <h6 style="padding-left: 10px">{{ list.name }}</h6>
+      <hr />
+      
+      <draggable v-model="list.cards" :options="{group: 'cards'}" class="dragArea" @change="cardMoved">
+      <card v-for="card in list.cards" :card="card" class="list-card card card-body mb-3"></card>
+      </draggable>
+
+	   <a v-if="!editing" v-on:click="startEditing" class="w-100 btn btn-light btn3" style="margin-left: 2px;">＋Add a card</a>
+       <textarea v-if="editing" v-model="message"
+       	ref="message" 
+        @keydown.enter.exact.prevent="submitMessage"
+        class="form-control"
+        placeholder="Write title for your card ↵"
+        style="margin-bottom: 6px;"
+        ></textarea>
+        <button v-if="editing" v-on:click="submitMessage" class="btn btn-light w-50" style="margin-left: 2px; margin-right: 3px;"><b>+ Add card</b></button>
+       <a v-if="editing" v-on:click="editing=false" class="btn btn-transparent"><b>✕</b></a>
+
+       
+      
+    </div>	
+</template>
+
+
+<script>
+	import draggable from 'vuedraggable'
+	import card from 'components/card'
+
+	export default {
+		components: { draggable, card },
+		props: ["list"],
+		data: function() {
+			return {
+				editing: false,
+				message: ""
+			}
+		},
+		methods: {
+		startEditing: function() {
+			this.editing = true
+			this.$nextTick(() => {this.$refs.message.focus() })
+		},
+		cardMoved: function(event) {
+	      const evt = event.added || event.moved
+	      if (evt == undefined) { return }
+
+	      const element = evt.element 
+
+	      const list_index = window.store.lists.findIndex((list) => {
+	        return list.cards.find((card) => {
+	          return card.id == element.id
+	        })
+	      }) 
+
+	      var data = new FormData 
+	      data.append("card[list_id", window.store.lists[list_index].id)
+	      data.append("card[position]", evt.newIndex + 1)
+
+	      Rails.ajax({
+	        url: `/cards/${element.id}/move`,
+	        type: "PATCH",
+	        data: data, 
+	        dataType: "json"
+	      })
+
+	    },
+
+	    submitMessage: function() {
+	      var data = new FormData
+	      data.append("card[list_id]", this.list.id)
+	      data.append("card[name]", this.message)
+	      Rails.ajax({
+	        url: "/cards",
+	        type: "POST",
+	        data: data,
+	        dataType: "json",
+	        success: (data) => {
+	          const index = window.store.lists.findIndex(item => item.id == this.list.id)
+	          window.store.lists[index].cards.push(data)
+	          this.message = ""
+	          this.$nextTick(() => {this.$refs.message.focus() })
+	        }
+	      })
+	    }
+	  }
+	}
+	
+</script>
+
+<style scoped>
+
+.dragArea {
+  min-height: 10px;
+}
+
+.list {
+  display: inline-block;
+  width: 270px; 
+  vertical-align: top;
+  margin-right: 12px;
+  background: #E2E4E6;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-right: 6px;
+  padding-left: 6px;
+
+  border-radius: 3px;
+}
+
+.btn3 {
+	background: transparent;
+	border: none;
+}
+
+.btn3:hover {
+	background: lightgrey;
+	transiton: all 0.5s ease;
+}
+
+.list-card{
+  margin-bottom: 7px!important;
+  padding: 10px;
+}
+
+</style>
