@@ -78,7 +78,7 @@
 	        dataType: "json",
 	        success: (data) => {
 
-	          this.$store.commit('addCard', data)
+	          // this.$store.commit('addCard', data)
 
 	    
 	          this.message = ""

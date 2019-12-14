@@ -72,7 +72,7 @@ class ListsController < ApplicationController
     puts "LIST HAS MOVED TO #{@list.position} POSTITION"
     puts "**********************"
 
-
+    ActionCable.server.broadcast "board", { commit: 'moveList', payload: render_to_string(@list, format: :json) }
     render action: :show
   end
 
