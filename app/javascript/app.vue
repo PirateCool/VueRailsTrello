@@ -1,11 +1,11 @@
 <template>
-  <draggable v-model="lists" :options="{group: 'lists'}" class="row dragArea" @end="listMoved">
-    <div v-for="(list, index) in lists" class="col-3">
-      <h6>{{ list.name }}</h6>
+  <draggable v-model="lists" :options="{group: 'lists'}" class="board dragArea" @end="listMoved">
+    <div v-for="(list, index) in lists" class="list">
+      <h6 style="padding-left: 10px">{{ list.name }}</h6>
       <hr />
       
       <draggable v-model="list.cards" :options="{group: 'cards'}" class="dragArea" @change="cardMoved">
-      <div v-for="(card, index) in list.cards" class="card card-body mb-3">
+      <div v-for="(card, index) in list.cards" class="list-card card card-body mb-3">
         {{ card.name }}
       </div>
       </draggable>
@@ -101,6 +101,31 @@ export default {
   color: lightgrey;
 }
 
+.board {
+  white-space: nowrap;
+  overflow-x: auto;
+  padding-bottom: 50px;
+
+}
+
+.list {
+  display: inline-block;
+  width: 270px; 
+  vertical-align: top;
+  margin-right: 12px;
+  background: #E2E4E6;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  padding-right: 6px;
+  padding-left: 6px;
+
+  border-radius: 3px;
+}
+
+.list-card{
+  margin-bottom: 7px!important;
+  padding: 9px;
+}
 
 
 </style>
